@@ -50,6 +50,19 @@ jobs:
             --upload-file "$WAR_FILE" \
             "$TOMCAT_URL/manager/text/deploy?path=/train-ticket-reservation&update=true" \
             --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD"
+             - name: Test Tomcat connection
+              - name: Test Tomcat connection
+      - name: Test tomcat connection
+        env:
+          TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
+          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
+          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
+        run: |
+          echo "Testing Tomcat Manager connection..."
+
+          curl --fail --show-error \
+            --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD" \
+            "$TOMCAT_URL/manager/text/list"
 
     
        
