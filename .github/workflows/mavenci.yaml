@@ -1,40 +1,56 @@
-name: ci pipeline to build java code and code quality by using sonarqube 
+
+name: Build Java Code and Deploy to Tomcat
+
 on:
-   push:
-     branches: master
+  push:
+    branches:
+      - master
+
 jobs:
   build:
-     runs-on: ubuntu-latest
-     steps:
-       - name: checkout code
-         uses: actions/checkout@v5
-       - name: set-up jdk
-         uses: actions/setup-java@v5
-         with:
-            distribution: 'temurin'
-            java-version: '17'
-       - name: build with maven 
-         run:  mvn clean package 
-         
-       - name: Deploy WAR to Tomcat
-         env:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout source code
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      # Step 2: Configure Java
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      # Step 3: Build Java application
+      - name: Build with Maven
+        run: mvn clean package
+
+      # Step 4: Verify WAR file
+      - name: Verify WAR file
+        run: |
+          WAR_FILE="target/TrainBook-1.0.0-SNAPSHOT.war"
+          echo "Checking WAR file: $WAR_FILE"
+          ls -lh target/
+          test -f "$WAR_FILE"
+
+      # Step 5: Deploy WAR to Tomcat
+      - name: Deploy WAR to Tomcat
+        env:
           TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
           TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
           TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
-         run: |
+        run: |
           WAR_FILE="target/TrainBook-1.0.0-SNAPSHOT.war"
 
-          echo "Deploying WAR file: $WAR_FILE"
-
-          ls -lh target/
-
-          test -f "$WAR_FILE"
+          echo "Deploying WAR file to Tomcat..."
 
           curl --fail --show-error \
             --upload-file "$WAR_FILE" \
             "$TOMCAT_URL/manager/text/deploy?path=/train-ticket-reservation&update=true" \
             --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD"
-           
+
       
        
 
