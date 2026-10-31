@@ -17,11 +17,11 @@ jobs:
          run:  mvn clean package 
          
        - name: Deploy WAR to Tomcat
-        env:
+         env:
           TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
           TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
           TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
-        run: |
+         run: |
           WAR_FILE="target/TrainBook-1.0.0-SNAPSHOT.war"
 
           echo "Deploying WAR file: $WAR_FILE"
