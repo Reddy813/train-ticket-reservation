@@ -20,6 +20,7 @@ jobs:
            WAr_FILE = target/Trainbook-1.0.0-SNAPSHOT.war
            echo "Deploying war file: $wAR_FILE"
            ls -l target
+           curl --fail --upload-file $WAR_FILE "$TOMCAT_URL/deploy?path=/train-ticket-reservation&update==true"  --user $TOMCAT_USERNAME:$TOMCAT_PASSWORD
          env:
            TOMACT_URL: ${{ secrets.TOMCAT_URL}}
            TOMACT_USERNAME: ${{ secrets.TOMCAT_USERNAME}}
