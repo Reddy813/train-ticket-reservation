@@ -51,7 +51,7 @@ jobs:
             "$TOMCAT_URL/manager/text/deploy?path=/train-ticket-reservation&update=true" \
             --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD"
 
-      
+    
        
 
          
