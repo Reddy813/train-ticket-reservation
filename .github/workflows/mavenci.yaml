@@ -35,7 +35,7 @@ jobs:
           ls -lh target/
           test -f "$WAR_FILE"
 
-      # Step 5: Deploy WAR to Tomcat
+      # Step 5: Deploy WAR to 
       - name: Deploy WAR to Tomcat
         env:
           TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
