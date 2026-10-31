@@ -17,7 +17,7 @@ jobs:
          run:  mvn clean package 
        - name: deploy war to tomact
          run: |
-           WAR_FILE = target/Trainbook-1.0.0-SNAPSHOT.war
+           WAR_FILE = target/TrainBook-1.0.0-SNAPSHOT.war
            echo "Deploying WAR file: $wAR_FILE"
            ls -l target
            curl --fail --upload-file $WAR_FILE "$TOMCAT_URL/deploy?path=/train-ticket-reservation&update==true"  --user $TOMCAT_USERNAME:$TOMCAT_PASSWORD
