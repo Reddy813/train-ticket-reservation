@@ -1,4 +1,5 @@
 
+
 name: Build Java Code and Deploy to Tomcat
 
 on:
@@ -35,7 +36,20 @@ jobs:
           ls -lh target/
           test -f "$WAR_FILE"
 
-      # Step 5: Deploy WAR to 
+      # Step 5: Test Tomcat connection
+      - name: Test Tomcat connection
+        env:
+          TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
+          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
+          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
+        run: |
+          echo "Testing Tomcat Manager connection..."
+
+          curl --fail --show-error \
+            --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD" \
+            "$TOMCAT_URL/manager/text/list"
+
+      # Step 6: Deploy WAR to Tomcat
       - name: Deploy WAR to Tomcat
         env:
           TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
@@ -50,19 +64,8 @@ jobs:
             --upload-file "$WAR_FILE" \
             "$TOMCAT_URL/manager/text/deploy?path=/train-ticket-reservation&update=true" \
             --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD"
-             - name: Test Tomcat connection
-              - name: Test Tomcat connection
-      - name: Test tomcat connection
-        env:
-          TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
-          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
-          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
-        run: |
-          echo "Testing Tomcat Manager connection..."
 
-          curl --fail --show-error \
-            --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD" \
-            "$TOMCAT_URL/manager/text/list"
+          echo "Deployment request completed."
 
     
        
