@@ -13,16 +13,19 @@ jobs:
          with:
             distribution: 'temurin'
             java-version: '17'
-       - name: validate with maven 
-         run:  mvn validate
-       - name: compile with maven 
-         run:  mvn compile 
-       - name: test with maven 
-         run:  mvn test
-       - name: package with maven 
-         run:  mvn package
-       - name: verify war file 
-         run:  ls -lh target/
+       - name: build with maven 
+         run:  mvn clean package 
+       - name: deploy war to tomact
+         run: |
+           WAr_FILE = target/Trainbook-1.0.0-SNAPSHOT.war
+           echo "Deploying war file: $wAR_FILE"
+           ls -l target
+         env:
+           TOMACT_URL: ${{ secrets.TOMCAT_URL}}
+           TOMACT_USERNAME: ${{ secrets.TOMCAT_USERNAME}}
+           TOMACT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD}}
+           
+      
        
 
          
