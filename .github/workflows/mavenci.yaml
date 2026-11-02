@@ -8,7 +8,7 @@ on:
       - master
 
 jobs:
-  DEV:
+   DEV:
     runs-on: ubuntu-latest
     environment: DEV
     
