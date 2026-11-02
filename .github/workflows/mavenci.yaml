@@ -89,9 +89,9 @@ jobs:
       # Step 6: Deploy WAR to Tomcat
       - name: Deploy WAR to Tomcat
         env:
-          TOMCAT_URL: ${{ secrets.TOMCAT_URL_1 }}
-          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME_1 }}
-          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD_1 }}
+          TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
+          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
+          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
         run: |
           WAR_FILE="target/TrainBook-1.0.0-SNAPSHOT.war"
 
@@ -100,7 +100,7 @@ jobs:
           curl --fail --show-error \
             --upload-file "$WAR_FILE" \
             "$TOMCAT_URL/manager/text/deploy?path=/train-ticket-reservation&update=true" \
-            --user "$TOMCAT_USERNAME_1:$TOMCAT_PASSWORD_1"
+            --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD"
 
           echo "Deployment request completed."  
 # This is where pre-prod works
@@ -138,9 +138,9 @@ jobs:
       # Step 6: Deploy WAR to Tomcat
       - name: Deploy WAR to Tomcat
         env:
-          TOMCAT_URL: ${{ secrets.TOMCAT_URL_2 }}
-          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME_2 }}
-          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD_2 }}
+          TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
+          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
+          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
         run: |
           WAR_FILE="target/TrainBook-1.0.0-SNAPSHOT.war"
 
@@ -149,7 +149,7 @@ jobs:
           curl --fail --show-error \
             --upload-file "$WAR_FILE" \
             "$TOMCAT_URL/manager/text/deploy?path=/train-ticket-reservation&update=true" \
-            --user "$TOMCAT_USERNAME_2:$TOMCAT_PASSWORD_2"
+            --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD"
 
           echo "Deployment request completed."
   
@@ -157,7 +157,7 @@ jobs:
 # This is where actual deployment happen
    Prod:
      runs-on: ubuntu-latest
-     needs: Pre-prod
+     needs: Pre-Prod
      environment: prod
 
      steps:
@@ -189,9 +189,9 @@ jobs:
       # Step 6: Deploy WAR to Tomcat
       - name: Deploy WAR to Tomcat
         env:
-          TOMCAT_URL: ${{ secrets.TOMCAT_URL_3 }}
-          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME_3 }}
-          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD_3 }}
+          TOMCAT_URL: ${{ secrets.TOMCAT_URL }}
+          TOMCAT_USERNAME: ${{ secrets.TOMCAT_USERNAME }}
+          TOMCAT_PASSWORD: ${{ secrets.TOMCAT_PASSWORD }}
         run: |
           WAR_FILE="target/TrainBook-1.0.0-SNAPSHOT.war"
 
@@ -200,7 +200,7 @@ jobs:
           curl --fail --show-error \
             --upload-file "$WAR_FILE" \
             "$TOMCAT_URL/manager/text/deploy?path=/train-ticket-reservation&update=true" \
-            --user "$TOMCAT_USERNAME_3:$TOMCAT_PASSWORD_3"
+            --user "$TOMCAT_USERNAME:$TOMCAT_PASSWORD"
 
           echo "Deployment request completed."
       
