@@ -27,17 +27,10 @@ jobs:
           cache: maven
 
       # Step 3: Build Java application
-      - name: validate with Maven
-        run: mvn validate 
+      - name: Build Application
+        run: mvn clean package 
 
-      - name: Test with maven
-        run: mvn test 
-        
-      - name: compile with maven
-        run: mvn compile 
-        
-      - name: package with maven
-        run: mvn package
+      
 
   
       - name: Upload Artifact to Nexus
