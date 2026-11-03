@@ -49,7 +49,7 @@ jobs:
             -Dversion=1.0.${{ github.run_number }} \
             -Dpackaging=war \
             -DrepositoryId=nexus \
-            -Durl=${{ secrets.NEXUS_URL }} \
+            -Durl=${{ secrets.NEXUS_HOST_URL }} \
             -DgeneratePom=true
         env:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
