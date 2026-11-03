@@ -42,7 +42,7 @@ jobs:
   
       - name: SonarQube Scan
         run: | 
-           mvn clean verify sonar:sonar\
+           mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar \
               -Dsonar.projectKey=train-ticket-reservation\
               -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}"\
               -Dsonar.tocken="${{ secrets.SONAR_TOKEN }}"\
