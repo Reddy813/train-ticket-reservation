@@ -24,7 +24,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-          cache: maven
+          server-id: nexus-releases
+          server-username: NEXUS_USERNAME
+          server-password: NEXUS_PASSWORD
+          
 
       # Step 3: Build Java application
       - name: Build Application
@@ -34,19 +37,7 @@ jobs:
 
   
       - name: Upload Artifact to Nexus
-        run: |
-          mvn org.apache.maven.plugins:maven-deploy-plugin:3.1.4:deploy-file \
-            -Dfile=target/TrainBook-1.0.0-SNAPSHOT.war \
-            -DgroupId=com.vijay \
-            -DartifactId=trainbook \
-            -Dversion=1.0.${{ github.run_number }} \
-            -Dpackaging=war \
-            -DrepositoryId=nexus \
-            -Durl=${{ secrets.NEXUS_HOST_URL }} \
-            -DgeneratePom=true
-        env:
-          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}  
+        run: mvn deploy -DskipTests  
       
 
         
