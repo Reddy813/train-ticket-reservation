@@ -10,6 +10,9 @@ on:
 jobs:
    DEV:
     runs-on: ubuntu-latest
+    env:
+      NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
     
     
 
@@ -24,8 +27,14 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+          server-id: nexus
+          server-username: NEXUS_USERNAME
+          server-password: NEXUS_PASSWORD
+
           
-          
+      - name: Verify Nexus Credentials Configuration
+        run: |
+          grep -A 5 '<id>nexus</id>' ~/.m2/settings.xml    
 
       # Step 3: Build Java application
       - name: Build Application
@@ -35,9 +44,7 @@ jobs:
 
   
       - name: Upload Artifact to Nexus
-        env:
-          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        
         run: |
           mvn deploy -DskipTests \
             -DaltDeploymentRepository=nexus::http://100.53.44.207:8081/repository/maven-snapshots/  
