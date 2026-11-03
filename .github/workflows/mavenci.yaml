@@ -24,9 +24,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-          server-id: nexus-releases
-          server-username: NEXUS_USERNAME
-          server-password: NEXUS_PASSWORD
+          
           
 
       # Step 3: Build Java application
@@ -37,7 +35,12 @@ jobs:
 
   
       - name: Upload Artifact to Nexus
-        run: mvn deploy -DskipTests  
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        run: |
+          mvn deploy -DskipTests \
+            -DaltDeploymentRepository=nexus::http://100.53.44.207:8081/repository/maven-snapshots/  
       
 
         
