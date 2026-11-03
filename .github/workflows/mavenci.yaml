@@ -40,17 +40,20 @@ jobs:
         run: mvn package
 
   
-      - name: Nexus Repo Publish
-        uses: sonatype-nexus-community/nexus-repo-github-action@master
-        with:
-          serverUrl: ${{ secrets.NEXUS_HOST_URL }}
-          username: ${{ secrets.NEXUS_USERNAME }}
-          password: ${{ secrets.NEXUS_PASSWORD }}
-          format: maven2
-          repository: maven-releases
-          coordinates: groupId=com.example artifactId=app version=1.0.0
-          assets: extension=war
-          filename: ./target/app-1.0.0.war  
+      - name: Upload Artifact to Nexus
+        run: |
+          mvn org.apache.maven.plugins:maven-deploy-plugin:3.1.4:deploy-file \
+            -Dfile=target/TrainBook-1.0.0-SNAPSHOT.war \
+            -DgroupId=com.vijay \
+            -DartifactId=trainbook \
+            -Dversion=1.0.${{ github.run_number }} \
+            -Dpackaging=war \
+            -DrepositoryId=nexus \
+            -Durl=${{ secrets.NEXUS_URL }} \
+            -DgeneratePom=true
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}  
       
 
         
