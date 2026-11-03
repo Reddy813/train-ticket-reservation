@@ -10,12 +10,7 @@ on:
 jobs:
    DEV:
     runs-on: ubuntu-latest
-    env:
-      NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
-      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
     
-    
-
     steps:
       # Step 1: Checkout source code
       - name: Checkout code
@@ -40,10 +35,10 @@ jobs:
       - name: Build Application
         run: mvn clean package 
 
-      
-
-  
       - name: Upload Artifact to Nexus
+        env:
+         NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+         NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
         
         run: |
           mvn deploy -DskipTests \
